@@ -33,7 +33,7 @@ const Adminlogin = async (req, response) => {
     }
     const status = await bcrypt.compare(req.body.password, admin.password);
     if (status) {
-        const token = jwt.sign({ user : admin }, secretkey, { expiresIn: '30d' })
+        const token = jwt.sign({  uid : admin._id, usertype:'admin'}, secretkey, { expiresIn: '30d' })
         resp = { status: "success", message: "admin logged in", data: { token } };
         // console.log(admin)
         response.status(200).send(resp)

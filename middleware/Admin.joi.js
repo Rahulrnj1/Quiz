@@ -26,6 +26,18 @@ const Adminloginschema = async (req, res, next) => {
 
 const adminquizschems = async (req, res, next) => {
   const schema = joi.object({
+    // question_list:joi.array().items(joi.string()).required(),
+    // answer: joi.string().required(),
+
+
+  });
+
+  validateSchema(req, res, next, schema);
+
+}
+
+const editadminquizschems = async (req, res, next) => {
+  const schema = joi.object({
     question: joi.string().required(),
     options: joi.array().items(joi.string()).required(),
     answer: joi.string().required(),
@@ -39,4 +51,5 @@ const adminquizschems = async (req, res, next) => {
 
 
 
-module.exports = { Adminregisterschema, Adminloginschema, adminquizschems }
+
+module.exports = { Adminregisterschema, Adminloginschema, adminquizschems,editadminquizschems }
