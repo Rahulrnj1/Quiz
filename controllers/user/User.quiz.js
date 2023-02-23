@@ -1,7 +1,4 @@
 const express = require('express');
-const User = require('../../model/user');
-const QuizSchema = require('../../model/quiz')
-const quizs = require('../../model/QuizAssign')
 const jwt = require("jsonwebtoken");
 const secretkey = "secretkey"
 const bcrypt = require('bcrypt');
@@ -20,7 +17,7 @@ const startExam = async (req, res, next) => {
             questions_list: 1,
             is_published: 1,
         });
-
+        // console.log(req.userData)
         if (!data) {
             return res.status(405).json({ status: error, message: "No quiz found! ", data: data })
 

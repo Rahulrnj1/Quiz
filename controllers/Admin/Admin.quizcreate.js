@@ -44,13 +44,10 @@ const QuizFunction = async (req, res, next) => {
         const question_list = req.body.question_list;
         const answers = req.body.answers;
         // console.log(req.userData)
-
         const quizs = new quiz({ name, question_list, created_by, answers });
         const result = await quizs.save();
         return res.status(200).json({ status: 200, message: "Create quiz succesfully", data: { quizId: quizs._id } });
 
-
-        // res.status(201).send(resp);
     } catch (error) {
         next(error);
     }
@@ -59,7 +56,7 @@ const QuizFunction = async (req, res, next) => {
 
 const GetQuizFunction = async (req, res) => {
     try {
-        console.log(req.userData)
+        // console.log(req.userData)
         const user = await quiz.find({}).sort();
         return res.status(200).json({ status: 200, message: "Get All quiz succesfully", data: user });
     }
@@ -90,7 +87,7 @@ const UpdateQuizFunction = async (req, res) => {
 const DeleteQuizFunction = async (req, res) => {
 
     const data = await quiz.findOne({ _id: req.params.id })
-    console.log(data)
+    // console.log(data)
     if (data) {
         const qes = await quiz.findByIdAndRemove(req.params.id);
         if (!qes) return res.status(500).json({ status: 500, message: "The quiz is not present by id" })
