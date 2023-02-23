@@ -13,8 +13,6 @@ const router = express.Router();
 
 router.post('/register', userregisterschema, user_controller.userRegister);
 router.post('/login', userloginschema, user_controller.userlogin);
-// router.get('/getquestion', checkAuth('user'), userscontroller.GetQuizquestion);
-// router.post('/ques_Assign',checkAuth('user'), userscontroller.QuizAssignFunction);
 
 router.get("/:quizId", checkAuth('user'),userscontroller.startExam);
 router.post("/report", checkAuth('user'),userscontroller.submitExam);

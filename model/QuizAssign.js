@@ -20,9 +20,14 @@ const reportSchema = new Schema(
             type: Number,
             required: true,
         },
-    },
+        is_active: { type: Boolean, default: true },
+        created_at: { type: Date, default: Date.now },
+        is_delete: { type: Boolean, default: false },
+        updated_at: { type: Date, default: Date.now },
+    }, {
+    collection: "Report",
+    versionKey: false
+});
 
-    { timestamps: true }
-);
 const Report = mongoose.model('Report', reportSchema);
 module.exports = Report;
