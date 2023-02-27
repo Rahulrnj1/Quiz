@@ -27,7 +27,7 @@ function checkAuth(usertype) {
                         }
                         else {
                             return res.status(500).json({
-                                message: "Token not found "
+                                message: "You are not authorized! "
                             })
                         }
                     }

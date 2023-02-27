@@ -1,63 +1,33 @@
 const express = require('express');
 const User = require('../../model/user');
-const QuizSchema = require('../../model/quiz')
 const jwt = require("jsonwebtoken");
-const secretkey = "secretkey"
-const bcrypt = require('bcrypt');
 const router = express.Router();
 const Config = require("../../common/config");
-const quiz = require('../../model/quiz');
+const Quiz = require('../../model/quiz');
+const quizcreate = require("../../model/Quizcreate")
 const { response } = require('express');
 
-//     try {
-//         // console.log(req.userData);
-//         if (req.userData.usertype == "admin") {
-//             const user = await User.findOne({ email: req.userData.email });
-//             // userid: req.body.userid
 
-//             if (!user) {
-//                 response = { status: "error", message: "No user exist", data: {} };
-//                 res.status(401).send(response);
-//             }
-//             const quizdata = await QuizSchema.findOneAndUpdate({ question: req.body.question }, req.body,
-//                 {
-//                     upsert: true,
-//                     new: true,
-//                     setDefaultsOnInsert: true
-//                 })
-//             res.json(quizdata)
+const AddQuiz = async (req, res) => {
 
-//         }
-
-//         else {
-//             res.send('only admin can create quiz question')
-//         }
-//     } catch (err) {
-//         res.send(err)
-//     }
-// }
-
-const QuizFunction = async (req, res, next) => {
     try {
-        const created_by = req.userData.uid
-        const name = req.body.name;
-        const question_list = req.body.question_list;
-        const answers = req.body.answers;
-        // console.log(req.userData)
-        const quizs = new quiz({ name, question_list, created_by, answers });
-        const result = await quizs.save();
-        return res.status(200).json({ status: 200, message: "Create quiz succesfully", data: { quizId: quizs._id } });
+        // console.log(req.body)
 
-    } catch (error) {
-        next(error);
+        let data = new quizcreate(req.body);
+        data = await data.save();
+
+
+        return res.status(200).json({ status: 200, message: "Quizcreate created successfully", bodydata: req.body, });
     }
-}
+    catch (error) {
+        return res.status(400).json({ status: 400, error: error.message, message: "invalid " });
 
-
-const GetQuizFunction = async (req, res) => {
+    }
+};
+const GetQuiz = async (req, res) => {
     try {
         // console.log(req.userData)
-        const user = await quiz.find({}).sort();
+        const user = await quizcreate.find({}).sort();
         return res.status(200).json({ status: 200, message: "Get All quiz succesfully", data: user });
     }
     catch (ex) {
@@ -66,73 +36,56 @@ const GetQuizFunction = async (req, res) => {
     }
 
 };
-const UpdateQuizFunction = async (req, res) => {
+const UpdateQuiz = async (req, res) => {
 
-    // console.log(req.body)
-
-    const data = await quiz.findOne({ _id: req.params.id, isdeleted: false })
+    const data = await quizcreate.findOne({ _id: req.params.id, isdeleted: false })
     if (data) {
-        const question = await quiz.findByIdAndUpdate(req.params.id, req.body, {
+        const quiz = await quizcreate.findByIdAndUpdate(req.params.id, req.body, {
             new: true
         });
-        if (!question) return res.status(500).send({ status: 500, message: "the quiz with given ID", data: question });
+        if (!quiz) return res.status(500).send({ status: 500, message: "the Quiz with given ID", data: quiz });
 
-        return res.status(200).json({ status: 200, message: "quiz updated successfully", data: question });
+        return res.status(200).json({ status: 200, message: "quiz Quizsuccessfully", data: quiz });
     }
     else {
-        return res.status(500).json({ status: 500, message: "quiz is not found " });
+        return res.status(500).json({ status: 500, message: "Quiz not found " });
 
-    }
-}
-const DeleteQuizFunction = async (req, res) => {
-
-    const data = await quiz.findOne({ _id: req.params.id })
-    // console.log(data)
-    if (data) {
-        const qes = await quiz.findByIdAndRemove(req.params.id);
-        if (!qes) return res.status(500).json({ status: 500, message: "The quiz is not present by id" })
-        return res.status(200).json({ status: 200, message: "quiz Deleted successfully" });
-
-    }
-    else {
-        return res.status(500).json({ status: 500, message: "The quiz is not present by id" });
     }
 
 };
 
-const GetQuizFunctionsingle = async (req, res) => {
+const Deletequiz = async (req, res) => {
 
+    const data = await quizcreate.findOne({ _id: req.params.id })
+    // console.log(data)
+    if (data) {
+        const quiz = await quizcreate.findByIdAndRemove(req.params.id);
+        if (!quiz) return res.status(500).json({ status: 500, message: "the quiz is not present by id" })
+        return res.status(200).json({ status: 200, message: "quiz Deleted successfully" });
+
+        // res.send(blog)
+    }
+    else {
+        return res.status(500).json({ status: 500, message: "quiz is Deleted " });
+    }
+
+};
+
+const Getsinglequiz = async (req, res) => {
+    // console.log(req.userData)
+    // console.log("234")
     try {
-        const data = await quiz.findById(req.params.id);
-        return res.status(200).json({ status: 200, message: "The Quiz with the given ID", data: data });
 
-        // res.send(Quiz);
+
+        const data = await quizcreate.findById(req.params.id);
+
+        return res.status(200).json({ status: 200, message: "The quiz with the given ID", data: data });
+
     }
     catch (ex) {
         console.log(ex.message);
-        if (!data) return res.status(404).send('the Quiz with the given ID');
+        if (!data) return res.status(404).send('the quiz with the given ID');
 
     }
 };
-const publishQuiz = async (req, res, next) => {
-    try {
-        const quizId = req.body.quizId;
-        const data = await quiz.findById(quizId);
-        // console.log(data)
-
-        if (!data) {
-            return res.status(404).json({ status: 404, message: "Quiz not found!" })
-        }
-
-        data.is_published = true;
-        await data.save();
-        return res.status(200).json({ status: 200, message: "Quiz published!", data: {} });
-
-    } catch (error) {
-        next(error);
-    }
-}
-
-
-
-module.exports = { QuizFunction, GetQuizFunction, UpdateQuizFunction, DeleteQuizFunction, GetQuizFunctionsingle, publishQuiz }
+module.exports = { AddQuiz, GetQuiz, UpdateQuiz, Deletequiz, Getsinglequiz }

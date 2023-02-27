@@ -26,8 +26,10 @@ const Adminloginschema = async (req, res, next) => {
 
 const adminquizschems = async (req, res, next) => {
   const schema = joi.object({
-    // question_list:joi.array().items(joi.string()).required(),
-    // answer: joi.string().required(),
+    _id: joi.string().min(5).max(50).required(),
+    name: joi.string().min(5).max(50).required(),
+    question_list:joi.array().items(joi.string()).required(),
+    
 
 
   });

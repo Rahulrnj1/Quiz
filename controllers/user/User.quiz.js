@@ -7,8 +7,6 @@ const Config = require("../../common/config");
 const quiz = require('../../model/quiz');
 const Report = require('../../model/QuizAssign')
 
-
-
 const startExam = async (req, res, next) => {
     try {
         const quizId = req.params.quizId;
@@ -48,6 +46,7 @@ const submitExam = async (req, res, next) => {
 
         let score = 0;
 
+        // await Report.deleteMany({ userId: req.userData.uid });
         for (let i = 0; i < total; i++) {
             let question_number = allQuestions[i];
             if (

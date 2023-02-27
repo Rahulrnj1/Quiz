@@ -33,7 +33,7 @@ const QuizSchema = new Schema({
     updated_at: { type: Date, default: Date.now },
 
 }, {
-    collection: "quiz",
+    collection: "Quiz",
     versionKey: false
 }).index(
     {
@@ -46,8 +46,8 @@ const QuizSchema = new Schema({
     }
 );
 
-const quiz = mongoose.model("quizs", QuizSchema)
-module.exports = quiz
+const Quiz = mongoose.model("Quiz", QuizSchema)
+module.exports = Quiz
 
 
 
