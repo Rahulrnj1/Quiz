@@ -8,7 +8,7 @@ const Quizregister = require("../../model/quiz.Registation")
 const Quizregistation = async (req, res) => {
     try {
         let quiz = await Quizregister.findOne({ userId: req.userData.uid, quizid: req.body.quizid});
-        console.log(quiz)
+        // console.log(quiz)
         if (quiz) return res.status(400).send("Quiz already registered");
 
 
