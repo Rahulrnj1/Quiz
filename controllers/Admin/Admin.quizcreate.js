@@ -12,7 +12,7 @@ const AddQuiz = async (req, res) => {
 
     try {
         // console.log(req.body)
-
+       
         let data = new quizcreate(req.body);
         data = await data.save();
 

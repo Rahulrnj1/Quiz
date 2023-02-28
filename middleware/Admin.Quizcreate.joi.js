@@ -8,8 +8,8 @@ const Quizcreateschema = async (req, res, next) => {
         participants: joi.string().required(),
         Start_time: joi.string().required(),
         end_time: joi.string().required(),
-        registration_start_time: joi.string().required(),
-        registration_end_time: joi.string().required(),
+        registration_start_datetime: joi.string().required(),
+        registration_end_datetime: joi.string().required(),
         no_of_Questions: joi.string().required(),
     });
 
@@ -23,8 +23,8 @@ const editQuizcreateschema = async (req, res, next) => {
         participants: joi.string().required(),
         Start_time: joi.string().required(),
         end_time: joi.string().required(),
-        registration_start_time: joi.string().required(),
-        registration_end_time: joi.string().required(),
+        registration_start_datetime: joi.string().required(),
+        registration_end_datetime: joi.string().required(),
         no_of_Questions: joi.string().required(),
 
     });

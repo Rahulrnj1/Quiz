@@ -32,5 +32,14 @@ const reportschema = async (req, res, next) => {
 
 }
 
+const Quizregisterschema = async (req, res, next) => {
+  const schema = joi.object({
+    userId: joi.string().required(),
+    quizid: joi.string().required(),
+    registration_date: joi.string().required(),
+  });
 
-module.exports = { userregisterschema, userloginschema, reportschema }
+  validateSchema(req, res, next, schema);
+
+}
+module.exports = { userregisterschema, userloginschema, reportschema, Quizregisterschema }
