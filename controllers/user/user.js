@@ -1,12 +1,11 @@
 const express = require('express');
 const User = require('../../model/user');
-const QuizSchema = require('../../model/quiz')
+// const QuizSchema = require('../../model/Quiz')
 const jwt = require("jsonwebtoken");
 const secretkey = "secretkey"
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const Config = require("../../common/config");
-const quiz = require('../../model/quiz');
 const userRegister = async (req, res) => {
 
     let user = await User.findOne({ email: req.body.email });

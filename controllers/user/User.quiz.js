@@ -4,8 +4,10 @@ const secretkey = "secretkey"
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const Config = require("../../common/config");
-const quiz = require('../../model/quiz');
+const Question= require('../../model/Question');
 const Report = require('../../model/QuizAssign')
+const quizcreate = require("../../model/Quiz")
+const Quizregister = require("../../model/quiz.participate")
 
 const startExam = async (req, res, next) => {
     try {
@@ -37,7 +39,7 @@ const submitExam = async (req, res, next) => {
         const quizId = req.body.quizId;
         const attempted_question = req.body.attempted_question;
 
-        const Quiz = await quiz.findById(quizId, { answers: 1 });
+        const Quiz = await Question.findById(quizId, { answers: 1 });
         const answers = Quiz.answers;
 
         const userId = req.userData.uid;
@@ -66,5 +68,42 @@ const submitExam = async (req, res, next) => {
         next(error);
     }
 };
+const publishQuiz = async (req, res, next) => {
+    try {
 
-module.exports = { startExam, submitExam }
+     
+        
+        const registeredQuizzes = await Quizregister.find({ quizid: req.body.quizId, userId: req.userData.uid })
+
+
+        if (!registeredQuizzes.length > 0) {
+            return res.status(404).json({ status: 404, message: "Quiz not found!" })
+        }
+        // console.log( req.userData.uid)
+        // console.log(req.body.quizId)
+        // console.log(registeredQuizzes)
+        const quizId = req.body.quizId;
+        const data = await quizcreate.findById(quizId);
+
+        if (!data) {
+            return res.status(404).json({ status: 404, message: "Quiz not found!" })
+        }
+        var aggreagate = [
+            { $sample: { size: 10 } },
+        ]
+        console.log(data);
+        const quizs = await Question.aggregate(aggreagate);
+        // console.log(quizs)
+        // let randomDocs = Quiz.aggregate(
+        //     [ { $sample: { size: 5 } } ]
+        // )
+        // data.is_published = true;
+        return res.status(200).json({ status: 200, message: "Quiz published!", data: quizs });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+module.exports = { startExam, submitExam, publishQuiz }

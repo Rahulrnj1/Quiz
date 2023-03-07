@@ -2,7 +2,7 @@ const { number, string } = require('joi');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const QuizregisterSchema = new Schema(
+const QuizparticipateSchema = new Schema(
     {
         quizid: { type: mongoose.Types.ObjectId, required: true },
         userId: { type: mongoose.Types.ObjectId, required: true },
@@ -12,9 +12,9 @@ const QuizregisterSchema = new Schema(
         is_delete: { type: Boolean, default: false },
         updated_at: { type: Date, default: Date.now },
     }, {
-    collection: "Quizregister",
+    collection: "Quizparticipate",
     versionKey: false
 });
 
-const Quizregister = mongoose.model('Quizregister', QuizregisterSchema);
-module.exports = Quizregister;
+const Quizparticipate = mongoose.model('Quizparticipate', QuizparticipateSchema);
+module.exports = Quizparticipate;

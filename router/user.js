@@ -20,8 +20,11 @@ router.get("/:quizId", checkAuth('user'), userscontroller.startExam);
 router.post("/report", checkAuth('user'), userscontroller.submitExam);
 
 router.get('/quizcreate/:quizname', checkAuth('user'), Quizuser.usergetQuiz);
-// router.get("/getquizuser", checkAuth('user'), Quizuser.usergetQuiz);
+router.get("/quizget/:getregisterquiz", checkAuth('user'), Quizuser.usergetparticipateQuiz);
+// router.get("/quiz-register/:quizstart", checkAuth('user'), Quizuser.Quizstart);
 // Quiz register user
 router.post('/quiz-register', checkAuth('user'), Quizregisterschema, Quizregistater.Quizregistation);
+
+router.post("/publish", checkAuth('user'), userscontroller.publishQuiz);
 
 module.exports = router; 

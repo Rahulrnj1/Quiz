@@ -6,9 +6,10 @@ const { adminquizschems } = require("../middleware/Admin.joi")
 
 const { checkAuth } = require('../middleware/jwt')
 
-const admincontroller = require("../controllers/Admin/Admin.Question");
+// const admincontroller = require("../controllers/Admin/Admin.Question");
+const admincontroller  = require("../controllers/Admin/Admin.Question")
 
-const { Adminregisterschema, Adminloginschema } = require('../middleware/Admin.joi')
+const { Adminregisterschema,Adminloginschema } = require('../middleware/Admin.joi')
 const { Quizcreateschema ,editQuizcreateschema } = require("../middleware/Admin.Quizcreate.joi")
 const adminQuizcreatecontroller = require("../controllers/Admin/Admin.Quizcreate")
 const Adminlogincontroller = require("../controllers/Admin/Admin")
@@ -17,10 +18,9 @@ router.post('/Adminregister', Adminregisterschema, Adminlogincontroller.AdminReg
 router.post('/Adminlogin', Adminloginschema, Adminlogincontroller.Adminlogin);
 
 
-router.post('/quiz-question', checkAuth("admin"), admincontroller.QuizFunction);
+router.post('/quiz-question', checkAuth("admin"), adminquizschems,admincontroller.QuizFunction);
 router.get('/getquiz-question', checkAuth('admin'), admincontroller.GetQuizFunction);
-router.put('/Editquiz-question/', checkAuth('admin'), adminquizschems, admincontroller.UpdateQuizFunction);
-router.patch("/publish", checkAuth('admin'), admincontroller.publishQuiz);
+router.put('/Editquiz-question/', checkAuth('admin'), admincontroller.UpdateQuizFunction);
 router.delete('/removequiz-question/:id', checkAuth('admin'), admincontroller.DeleteQuizFunction);
 router.get('/getsinglequiz-question/:id', checkAuth('admin'), admincontroller.GetQuizFunctionsingle);
 

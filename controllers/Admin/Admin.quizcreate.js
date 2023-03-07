@@ -3,8 +3,7 @@ const User = require('../../model/user');
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const Config = require("../../common/config");
-const Quiz = require('../../model/quiz');
-const quizcreate = require("../../model/Quizcreate")
+const quizcreate = require("../../model/Quiz")
 const { response } = require('express');
 
 

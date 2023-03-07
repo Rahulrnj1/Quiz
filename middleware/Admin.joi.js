@@ -22,21 +22,28 @@ const Adminloginschema = async (req, res, next) => {
   validateSchema(req, res, next, schema);
 
 }
-
-
 const adminquizschems = async (req, res, next) => {
-  const schema = joi.object({
-    _id: joi.string().min(5).max(50).required(),
-    name: joi.string().min(5).max(50).required(),
-    question_list:joi.array().items(joi.string()).required(),
-    
-
-
-  });
-
+  const schema = joi.array().items(
+    joi.object({
+      question: joi.string().required(),
+      option: joi.array().required(),
+      answers: joi.string().required()
+   })
+  )
   validateSchema(req, res, next, schema);
+};
 
-}
+// const adminquizschems = async (req, res, next) => {
+//   const schema = joi.object({
+//     question: joi.string().required(),
+//     option: joi.array().items(joi.object()).required(),
+//     answers: joi.string().required(),
+//   });
+
+
+//   validateSchema(req, res, next, schema);
+
+// }
 
 const editadminquizschems = async (req, res, next) => {
   const schema = joi.object({

@@ -1,11 +1,9 @@
 const express = require('express');
 const User = require('../../model/user');
-const QuizSchema = require('../../model/quiz')
 const jwt = require("jsonwebtoken");
 const secretkey = "secretkey"
 const bcrypt = require('bcrypt');
 const Config = require("../../common/config");
-// const { response } = require('express');
 const AdminRegister = async (req, res) => {
 
     let user = await User.findOne({ email: req.body.email });
