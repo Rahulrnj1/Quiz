@@ -25,10 +25,11 @@ const Adminloginschema = async (req, res, next) => {
 const adminquizschems = async (req, res, next) => {
   const schema = joi.array().items(
     joi.object({
+      subjectId:joi.string().required(),
       question: joi.string().required(),
       option: joi.array().required(),
       answers: joi.string().required()
-   })
+    })
   )
   validateSchema(req, res, next, schema);
 };
@@ -47,6 +48,7 @@ const adminquizschems = async (req, res, next) => {
 
 const editadminquizschems = async (req, res, next) => {
   const schema = joi.object({
+    // subjectId:joi.string().required(),
     question: joi.string().required(),
     options: joi.array().items(joi.string()).required(),
     answer: joi.string().required(),
@@ -59,6 +61,14 @@ const editadminquizschems = async (req, res, next) => {
 }
 
 
+const subjectschema = async (req, res, next) => {
+  const schema = joi.object({
+    subject_name: joi.string().required()
 
+  });
 
-module.exports = { Adminregisterschema, Adminloginschema, adminquizschems,editadminquizschems }
+  validateSchema(req, res, next, schema);
+
+}
+
+module.exports = { Adminregisterschema, Adminloginschema, adminquizschems, editadminquizschems, subjectschema }

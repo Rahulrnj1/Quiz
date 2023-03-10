@@ -8,8 +8,9 @@ const { checkAuth } = require('../middleware/jwt')
 
 // const admincontroller = require("../controllers/Admin/Admin.Question");
 const admincontroller  = require("../controllers/Admin/Admin.Question")
+const subjectcontroller = require("../controllers/Admin/Subject")
 
-const { Adminregisterschema,Adminloginschema } = require('../middleware/Admin.joi')
+const { Adminregisterschema,Adminloginschema ,subjectschema} = require('../middleware/Admin.joi')
 const { Quizcreateschema ,editQuizcreateschema } = require("../middleware/Admin.Quizcreate.joi")
 const adminQuizcreatecontroller = require("../controllers/Admin/Admin.Quizcreate")
 const Adminlogincontroller = require("../controllers/Admin/Admin")
@@ -30,5 +31,7 @@ router.get('/getquiz-quiz', checkAuth('admin'), adminQuizcreatecontroller.GetQui
 router.put('/Edit-quiz/:id', checkAuth('admin'), editQuizcreateschema , adminQuizcreatecontroller.UpdateQuiz);
 router.delete('/remov-equiz/:id', checkAuth('admin'), adminQuizcreatecontroller.Deletequiz);
 router.get('/getsingle-quiz/:id', checkAuth('admin'), adminQuizcreatecontroller.Getsinglequiz);
+
+router.post('/subj-create', checkAuth("admin"), subjectschema, subjectcontroller.Addsubject);
 
 module.exports = router; 

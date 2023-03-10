@@ -4,6 +4,7 @@ const validateSchema = require('./validation')
 
 const Quizcreateschema = async (req, res, next) => {
     const schema = joi.object({
+        subjectId:joi.string().required(),
         quizname: joi.string().required(),
         participants: joi.string().required(),
         Start_time: joi.string().required(),

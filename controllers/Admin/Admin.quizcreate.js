@@ -5,13 +5,14 @@ const router = express.Router();
 const Config = require("../../common/config");
 const quizcreate = require("../../model/Quiz")
 const { response } = require('express');
+const subject = require('../../model/subject');
 
 
 const AddQuiz = async (req, res) => {
 
     try {
         // console.log(req.body)
-       
+     
         let data = new quizcreate(req.body);
         data = await data.save();
 

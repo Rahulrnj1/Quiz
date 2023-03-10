@@ -4,10 +4,14 @@ const secretkey = "secretkey"
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const Config = require("../../common/config");
-const Question= require('../../model/Question');
+const Question = require('../../model/Question');
 const Report = require('../../model/QuizAssign')
 const quizcreate = require("../../model/Quiz")
-const Quizregister = require("../../model/quiz.participate")
+const Quizregister = require("../../model/quiz.participate");
+const Quiz = require('../../model/Quiz');
+var mongoose = require('mongoose');
+const { ObjectId } = require('mongodb');
+
 
 const startExam = async (req, res, next) => {
     try {
@@ -68,13 +72,18 @@ const submitExam = async (req, res, next) => {
         next(error);
     }
 };
+
 const publishQuiz = async (req, res, next) => {
     try {
 
-     
-        
-        const registeredQuizzes = await Quizregister.find({ quizid: req.body.quizId, userId: req.userData.uid })
+        const Quizdetails = await Quiz.findOne({ _id: req.body.quizId, userId: req.userData.uid });
+        // const subject = Quizdetails.subjectId
+        const subject = Quizdetails.subjectId
 
+        // console.log(req.body._id)
+
+        const registeredQuizzes = await Quizregister.find({ quizid: req.body.quizId, userId: req.userData.uid })
+        // console.log(registeredQuizzes)
 
         if (!registeredQuizzes.length > 0) {
             return res.status(404).json({ status: 404, message: "Quiz not found!" })
@@ -85,13 +94,20 @@ const publishQuiz = async (req, res, next) => {
         const quizId = req.body.quizId;
         const data = await quizcreate.findById(quizId);
 
+
+
         if (!data) {
             return res.status(404).json({ status: 404, message: "Quiz not found!" })
         }
+
         var aggreagate = [
+
+            { $match: { subjectId: subject } },
             { $sample: { size: 10 } },
+
         ]
-        console.log(data);
+
+        console.log(aggreagate);
         const quizs = await Question.aggregate(aggreagate);
         // console.log(quizs)
         // let randomDocs = Quiz.aggregate(

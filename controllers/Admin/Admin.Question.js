@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const Config = require("../../common/config");
 const Question = require("../../model/Question")
+const subject = require("../../model/subject")
 const quizcreate = require("../../model/Quiz")
 const Quizregister = require("../../model/quiz.participate")
 const { response } = require('express');
@@ -41,9 +42,10 @@ const { options } = require('joi');
 
 const QuizFunction = async (req, res, next) => {
     try {
+      
+        // subjectId:req.body.subjectId
 
-
-        const quizs = await  Question.insertMany(req.body);
+        const quizs = await Question.insertMany(req.body);
         return res.status(200).json({ status: 200, message: "Create Question succesfully", data: req.body });
 
     } catch (error) {
@@ -137,8 +139,8 @@ const publishQuiz = async (req, res, next) => {
         //     quizid: true
 
         // })
-        const registeredQuizzes = await Quizregister.find({ quizid: req.body.quizId, userId: req.userData.uid }) 
-        
+        const registeredQuizzes = await Quizregister.find({ quizid: req.body.quizId, userId: req.userData.uid })
+
         if (!registeredQuizzes) {
             return res.status(404).json({ status: 404, message: "Quiz not found!" })
         }

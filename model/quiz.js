@@ -5,6 +5,10 @@ const { Schema } = mongoose;
 const QuizSchema = new Schema(
     {
         quizname: { type: String, default: '', unique: true },
+        subjectId: {
+            type: mongoose.Types.ObjectId, default: ''
+           
+        },
         participants: { type: String, default: '' },
         Start_time: { type: String, default: '' },
         end_time: { type: String, default: '' },
