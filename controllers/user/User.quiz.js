@@ -10,7 +10,7 @@ const quizcreate = require("../../model/Quiz")
 const Quizregister = require("../../model/quiz.participate");
 const Quiz = require('../../model/Quiz');
 var mongoose = require('mongoose');
-const { ObjectId } = require('mongodb');
+
 
 
 const startExam = async (req, res, next) => {
@@ -76,44 +76,36 @@ const submitExam = async (req, res, next) => {
 const publishQuiz = async (req, res, next) => {
     try {
 
-        const Quizdetails = await Quiz.findOne({ _id: req.body.quizId, userId: req.userData.uid });
-        // const subject = Quizdetails.subjectId
-        const subject = Quizdetails.subjectId
+        const Quizdetails = await Quiz.findOne({ _id: req.body.quizId });
+        if (Quizdetails.length === 0) {
+            return res.status(404).json({ status: 404, message: "Quiz not found!" })
+        }
 
-        // console.log(req.body._id)
 
         const registeredQuizzes = await Quizregister.find({ quizid: req.body.quizId, userId: req.userData.uid })
-        // console.log(registeredQuizzes)
 
-        if (!registeredQuizzes.length > 0) {
-            return res.status(404).json({ status: 404, message: "Quiz not found!" })
+        if (registeredQuizzes.length === 0) {
+            return res.status(404).json({ status: 404, message: "QuizParticipate  not found!" })
         }
         // console.log( req.userData.uid)
         // console.log(req.body.quizId)
         // console.log(registeredQuizzes)
         const quizId = req.body.quizId;
         const data = await quizcreate.findById(quizId);
-
-
-
         if (!data) {
             return res.status(404).json({ status: 404, message: "Quiz not found!" })
         }
 
         var aggreagate = [
 
-            { $match: { subjectId: subject } },
-            { $sample: { size: 10 } },
+            { $match: { subjectId: Quizdetails.subjectId } },
+            { $sample: { size: Number(Quizdetails.no_of_Questions) } },
 
         ]
 
-        console.log(aggreagate);
+        // console.log(aggreagate);
         const quizs = await Question.aggregate(aggreagate);
-        // console.log(quizs)
-        // let randomDocs = Quiz.aggregate(
-        //     [ { $sample: { size: 5 } } ]
-        // )
-        // data.is_published = true;
+
         return res.status(200).json({ status: 200, message: "Quiz published!", data: quizs });
 
     } catch (error) {
